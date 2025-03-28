@@ -31,7 +31,7 @@ avg_susceptible = average_snps(susceptible_dir)
 
 print(f"Average SNPs per sample in Susceptible Dir is {round(avg_susceptible, 0)}")
 print(f"Average SNPs per sample in Resistant Dir is {round(avg_resistant, 0)}")
-print(f"Overall average = {round(((avg_resistant + avg_susceptible) / 2), 0)}") # 1548
+print(f"Overall average = {round(((avg_resistant + avg_susceptible) / 2), 0)}") # 1531
 
 # Now check for before removing uninformative SNPs
 
