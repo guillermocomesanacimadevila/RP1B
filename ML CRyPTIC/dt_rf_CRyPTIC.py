@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_error
 from scipy.ndimage import gaussian_filter1d
 from collections import OrderedDict
 
-# --- Plotting style ---
+# --- Plotting style --- #
 plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["Times New Roman"],
@@ -22,7 +22,7 @@ plt.rcParams.update({
     "lines.markersize": 6
 })
 
-# === Load and preprocess CRyPTIC data ===
+# === Manipulating CRyPTIC data === #
 susceptible_dir = "/home/jovyan/DOUBLE_DESCENT/Data/downloaded_susceptible/gunziped_susceptible/csv_susceptible/post_QC_susceptible"
 resistant_dir = "/home/jovyan/DOUBLE_DESCENT/Data/downloaded_resistant/gunziped_resistant/csv_converted/post_QC_resistant"
 
@@ -39,15 +39,17 @@ def extract_features_from_csv(file_path):
 # Load data
 susceptible_data = [extract_features_from_csv(os.path.join(susceptible_dir, file))
                     for file in os.listdir(susceptible_dir) if file.endswith(".csv")]
+
 susceptible_df = pd.concat(susceptible_data, ignore_index=True)
 susceptible_df["label"] = 0
 
 resistant_data = [extract_features_from_csv(os.path.join(resistant_dir, file))
                   for file in os.listdir(resistant_dir) if file.endswith(".csv")]
+
 resistant_df = pd.concat(resistant_data, ignore_index=True)
 resistant_df["label"] = 1
 
-# Combine and split
+# Combine and split (70/30) - Curth et al. (2023) & Belkin et al. (2019)
 data = pd.concat([susceptible_df, resistant_df], ignore_index=True).dropna()
 X = data.drop(columns=["label"])
 y = data["label"]
@@ -58,7 +60,7 @@ def evaluate(model):
     y_pred = model.predict(X_test)
     return mean_squared_error(y_test, y_pred)
 
-# --- Experiment 1: Double Descent Composite Curves ---
+# --- Experiment 1: Double Descent Composite Plot --- #
 P_leaf_max_values = [50, 100, 200, 500]
 P_ens_values = [1, 2, 5, 10, 20, 50]
 all_possible_leaf_sizes = [2, 5, 10, 20, 50, 100, 200, 500]
@@ -88,7 +90,7 @@ for P_leaf_max in P_leaf_max_values:
     all_curves[P_leaf_max] = smoothed
     x_label_master[P_leaf_max] = curve_labels
 
-# === Plot Composite Double Descent Curves ===
+# === Plot Composite Curves === #
 styles = {
     50: {'linestyle': '--', 'marker': 'o', 'color': 'tab:blue'},
     100: {'linestyle': '-.', 'marker': 's', 'color': 'tab:orange'},
@@ -116,10 +118,10 @@ ax.set_ylabel("Mean Squared Error")
 ax.set_xlabel("Model Complexity: Leaf Nodes → Ensemble Size")
 ax.legend(title="Transition", title_fontsize=10, loc='upper right')
 plt.tight_layout()
-plt.savefig("CRyPTIC_combined_double_descent_curves.png", dpi=300)
+plt.savefig("CRyPTIC_dd.png", dpi=300)
 plt.show()
 
-# --- Experiment 2: Vary P_leaf for fixed ensemble sizes ---
+# --- Experiment 2: Vary P_leaf for fixed P_ens --- #
 P_leaf_values = [2, 5, 10, 20, 50, 100, 200, 300, 500]
 fixed_ensemble_sizes = [1, 5, 10, 50]
 depth_curves = {}
@@ -133,7 +135,7 @@ for p_ens in fixed_ensemble_sizes:
         errors.append(err)
     depth_curves[p_ens] = gaussian_filter1d(errors, sigma=1)
 
-# --- Experiment 3: Vary P_ens for fixed max_leaf_nodes ---
+# --- Experiment 3: Vary P_ens for fixed max P_leaf --- #
 fixed_tree_depths = [20, 50, 100, 500]
 ensemble_curves = {}
 P_ens_values = [1, 2, 5, 10, 20, 50]
@@ -147,7 +149,7 @@ for p_leaf in fixed_tree_depths:
         errors.append(err)
     ensemble_curves[p_leaf] = gaussian_filter1d(errors, sigma=1)
 
-# === Plot both depth and ensemble size plots ===
+# === Data Visualisation === #
 fig, axes = plt.subplots(1, 2, figsize=(16, 6), sharey=True, constrained_layout=True)
 
 # Panel 1: Varying P_leaf
@@ -176,5 +178,5 @@ axes[1].set_xlabel(r"$P_{\mathrm{ens}}$")
 axes[1].legend(frameon=True, facecolor='white')
 axes[1].grid(False)
 
-plt.savefig("CRyPTIC_curth_experiments_polished.png", dpi=300)
+plt.savefig("CRyPTIC_dt_rf.png", dpi=300)
 plt.show()
