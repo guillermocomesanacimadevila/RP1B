@@ -7,7 +7,7 @@
 BASE_URL="https://ftp.ebi.ac.uk/pub/databases/cryptic/release_june2022/reproducibility/"
 
 # CSV file containing the VCF column
-CSV_FILE="resistant_samples.csv"
+CSV_FILE="resistant_metadata.csv"
 
 # Extract VCF filenames and download each file
 while IFS=',' read -r _ _ VCF _; do
