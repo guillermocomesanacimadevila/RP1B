@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
-# --- Styling ---
+# --- Plotting Style --- #
 plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["Times New Roman"],
@@ -18,9 +18,9 @@ plt.rcParams.update({
     "lines.markersize": 6
 })
 
-# --- Dataset ---
+# --- Synthetic Dataset --- #
 np.random.seed(42)
-n_samples = 1000
+n_samples = 500
 n_features = 50
 
 X = np.random.rand(n_samples, n_features)
@@ -28,7 +28,7 @@ y = np.sin(2 * np.pi * X[:, 0]) + np.log(X[:, 1] + 1) + 0.5 * np.random.randn(n_
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# --- Experiment 1: MSE vs Leaf Nodes per Tree ---
+# --- Experiment 1: MSE vs Leaf Nodes per Tree --- #
 leaf_nodes = np.linspace(2, 500, 20, dtype=int)
 ensemble_sizes_fixed = [1, 5, 10, 50]
 dt_test_errors = {ens: [] for ens in ensemble_sizes_fixed}
@@ -39,7 +39,7 @@ for leaves in leaf_nodes:
         rf.fit(X_train, y_train)
         dt_test_errors[ens].append(mean_squared_error(y_test, rf.predict(X_test)))
 
-# --- Experiment 2: MSE vs Ensemble Size ---
+# --- Experiment 2: MSE vs Ensemble Size --- #
 ensemble_sizes = np.linspace(1, 100, 15, dtype=int)
 tree_depths_fixed = [20, 50, 100, 500]
 rf_test_errors = {depth: [] for depth in tree_depths_fixed}
@@ -50,7 +50,7 @@ for ens in ensemble_sizes:
         rf.fit(X_train, y_train)
         rf_test_errors[depth].append(mean_squared_error(y_test, rf.predict(X_test)))
 
-# --- Composite (Transition) Experiment ---
+# --- Composite Experiment --- #
 composite_leaf_nodes = np.linspace(2, 100, 25, dtype=int)
 composite_ensemble_sizes = np.linspace(1, 100, 15, dtype=int)
 composite_test_errors = []
@@ -67,7 +67,7 @@ for ens in composite_ensemble_sizes:
 
 interpolation_idx = len(composite_leaf_nodes) - 1
 
-# --- Plotting ---
+# --- Visualisations --- #
 fig, axes = plt.subplots(1, 3, figsize=(21, 6), constrained_layout=True, sharey=True)
 
 # Panel A: Composite Double Descent Curve
@@ -92,7 +92,7 @@ axes[1].set_xlabel(r"$P_{\mathrm{leaf}}$")
 axes[1].legend(frameon=True, facecolor='white')
 axes[1].grid(False)
 
-# Panel C: MSE vs Ensemble Size (Fixed Depth)
+# Panel C: MSE vs Ensemble Size (Fixed Leaves)
 linestyles = ['-', '--', '-.', ':']
 markers = ['o', 's', 'D', '^']
 offset = np.linspace(-0.3, 0.3, len(tree_depths_fixed))
@@ -108,6 +108,5 @@ axes[2].set_xlabel(r"$P_{\mathrm{ens}}$")
 axes[2].legend(frameon=True, facecolor='white')
 axes[2].grid(False)
 
-# Save and show
-plt.savefig("styled_tree_experiments_left_composite.png", dpi=300)
+plt.savefig("dt_rf_simulated.png", dpi=300)
 plt.show()
