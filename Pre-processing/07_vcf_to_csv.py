@@ -4,7 +4,7 @@ import pandas as pd
 
 def open_file(location):
     file = open(os.path.expanduser(location), "r")
-    return pd.read_csv(file, sep="\t", header=None)
+    return pd.read_csv(file, sep="\t", header=None, index_col=0)
 
 def vcf_to_csv(vcf_file_path, csv_file_path):
     with open(vcf_file_path, "r") as vcf_file:
