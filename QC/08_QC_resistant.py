@@ -2,11 +2,11 @@
 import os
 import pandas as pd
 
-# Input and output directories
+# Input and output dirs
 input_dit = "/home/jovyan/DOUBLE_DESCENT/Data/downloaded_resistant/gunziped_resistant/csv_converted"
 output_dir = "/home/jovyan/DOUBLE_DESCENT/Data/downloaded_resistant/gunziped_resistant/csv_converted/post_QC_resistant"
 
-# First ensure output directory exsists
+# Ensure output dir exsists
 os.makedirs(output_dir, exist_ok=True)
 
 # List all 4 DNA nucleotides to filter through ALT & REF
@@ -41,8 +41,7 @@ print("Done!")
 
 # === Additional notes === #
 # QC
-# Quality = HIGH - how?
-# 76 samples = Resistant - 424 = susceptible
-# Isonazid - why?
+# Quality = HIGH - Isonazid
+# 250 samples = Resistant - 250 = susceptible
 # Iterate through list(vcf1["ALT"].unique()) and look for = NULL positions
 # Make script that iterates through both positions of all CSV-converted VCFs and removes INDELs
