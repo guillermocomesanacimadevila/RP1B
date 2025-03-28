@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from scipy.ndimage import gaussian_filter1d
 
-# --- Style config ---
+# --- Plotting Style --- #
 plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["Times New Roman"],
@@ -18,7 +18,7 @@ plt.rcParams.update({
     "lines.markersize": 6
 })
 
-# --- Simulated dataset ---
+# --- Synthetic dataset --- #
 np.random.seed(42)
 n_samples = 500
 n_features = 50
@@ -26,14 +26,14 @@ X = np.random.rand(n_samples, n_features)
 y = np.sin(2 * np.pi * X[:, 0]) + np.log(X[:, 1] + 1) + 0.5 * np.random.randn(n_samples)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# --- Hyperparameters ---
+# --- Hyperparameters --- #
 P_boost_values = np.linspace(1, 200, 20, dtype=int)
 P_ens_values = np.array([1, 2, 5, 10, 20])
 fixed_ensemble_sizes = P_ens_values
 fixed_boosting_rounds = [10, 25, 50, 200]
 fixed_boost_rounds = 200  # for composite experiment
 
-# --- Experiment 1: Error vs P_boost (Fixed P_ens) ---
+# --- Experiment 1: MSE vs P_boost (Fixed P_ens) --- #
 boosting_test_errors = {ens: [] for ens in fixed_ensemble_sizes}
 for rounds in P_boost_values:
     for ens in fixed_ensemble_sizes:
@@ -48,7 +48,7 @@ for rounds in P_boost_values:
         avg_preds = np.mean(preds, axis=0)
         boosting_test_errors[ens].append(mean_squared_error(y_test, avg_preds))
 
-# --- Experiment 2: Error vs P_ens (Fixed P_boost) ---
+# --- Experiment 2: MSE vs P_ens (Fixed P_boost) --- #
 ensemble_test_errors = {boost: [] for boost in fixed_boosting_rounds}
 for ens in P_ens_values:
     for boost in fixed_boosting_rounds:
@@ -63,7 +63,7 @@ for ens in P_ens_values:
         avg_preds = np.mean(preds, axis=0)
         ensemble_test_errors[boost].append(mean_squared_error(y_test, avg_preds))
 
-# --- Composite Plot: P_boost -> P_ens ---
+# --- Composite Plot: P_boost -> P_ens --- #
 composite_test_errors = []
 composite_x_labels = []
 
@@ -95,7 +95,7 @@ for ens in P_ens_values:
     composite_test_errors.append(mean_squared_error(y_test, avg_preds))
     composite_x_labels.append(f"E{ens}")
 
-# --- Plotting ---
+# --- Data Visualisation --- #
 fig, axes = plt.subplots(1, 3, figsize=(18, 6), dpi=300, constrained_layout=True)
 
 # Panel A: Composite
@@ -139,4 +139,5 @@ axes[2].grid(False)
 axes[2].set_yticklabels([])
 axes[2].set_ylabel("")
 
+plt.savefig("gboost_sim.png", dpi=300)
 plt.show()
