@@ -4,9 +4,9 @@
 mkdir -p gunziped_resistant
 
 # Loop through all .vcf.gz files
+# Keep the original .vcf.gz just in case | parse .vcf -> new dir
 for file in *.vcf.gz; do
     if [[ -f "$file" ]]; then
-        # Gunzip the file (keeps the original name but without .gz)
         gunzip -c "$file" > "gunziped_resistant/${file%.gz}"
         echo "Uncompressed: $file -> gunziped_resistant/${file%.gz}"
     fi
