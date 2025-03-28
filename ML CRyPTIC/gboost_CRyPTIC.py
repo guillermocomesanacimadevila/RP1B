@@ -17,7 +17,7 @@ plt.rcParams.update({
     "legend.fontsize": 10
 })
 
-# === Load and preprocess CRyPTIC data === #
+# === Process CRyPTIC data === #
 susceptible_dir = "/home/jovyan/DOUBLE_DESCENT/Data/downloaded_susceptible/gunziped_susceptible/csv_susceptible/post_QC_susceptible"
 resistant_dir = "/home/jovyan/DOUBLE_DESCENT/Data/downloaded_resistant/gunziped_resistant/csv_converted/post_QC_resistant"
 
@@ -31,18 +31,20 @@ def extract_features_from_csv(file_path):
     df["GT_CONF"] = pd.to_numeric(df["GT_CONF"], errors="coerce").fillna(0)
     return df[["POS", "GT", "DP", "GT_CONF"]]
 
-# Load & label data
+# Load data
 susceptible_data = [extract_features_from_csv(os.path.join(susceptible_dir, file))
                     for file in os.listdir(susceptible_dir) if file.endswith(".csv")]
+
 susceptible_df = pd.concat(susceptible_data, ignore_index=True)
 susceptible_df["label"] = 0
 
 resistant_data = [extract_features_from_csv(os.path.join(resistant_dir, file))
                   for file in os.listdir(resistant_dir) if file.endswith(".csv")]
+
 resistant_df = pd.concat(resistant_data, ignore_index=True)
 resistant_df["label"] = 1
 
-# Combine and split
+# Combine and split - 70/30 -> Curth et al. (2023) and Belkin et al, (2019)
 data = pd.concat([susceptible_df, resistant_df], ignore_index=True)
 data.dropna(inplace=True)
 
@@ -50,7 +52,7 @@ X = data.drop(columns=["label"])
 y = data["label"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.3, random_state=42)
 
-# === Params === #
+# === Hyperparameters === #
 P_boost_values = np.linspace(10, 300, 20, dtype=int)
 P_ens_values = np.array([1, 2, 5, 10, 20])
 fixed_boosting_rounds = [20, 50, 100, 200]
@@ -81,7 +83,7 @@ for ens in P_ens_values:
     composite_errors.append(mean_squared_error(y_test, avg_preds))
     composite_labels.append(f"E{ens}")
 
-# === Vary Boosting Rounds (Fixed Ens Size) === #
+# === Vary P_boost (Fixed P_ens) === #
 boost_errors_by_ens = {}
 for ens in P_ens_values:
     errs = []
@@ -96,7 +98,7 @@ for ens in P_ens_values:
         errs.append(mean_squared_error(y_test, avg_preds))
     boost_errors_by_ens[ens] = gaussian_filter1d(errs, sigma=1)
 
-# === Vary Ensemble Size (Fixed Boosting Rounds) === #
+# === Vary P_ens (Fixed P_boost) === #
 ens_errors_by_boost = {}
 for rounds in fixed_boosting_rounds:
     errs = []
@@ -111,7 +113,7 @@ for rounds in fixed_boosting_rounds:
         errs.append(mean_squared_error(y_test, avg_preds))
     ens_errors_by_boost[rounds] = gaussian_filter1d(errs, sigma=1)
 
-# === Plotting === #
+# === Data Visualisation === #
 fig, axes = plt.subplots(1, 3, figsize=(21, 6), constrained_layout=True)
 
 # Panel A: Composite
@@ -125,7 +127,7 @@ axes[0].set_ylabel("Mean Squared Error")
 axes[0].legend()
 axes[0].grid(False)
 
-# Panel B: Boosting Rounds
+# Panel B: P_boost
 colors = plt.cm.viridis(np.linspace(0, 1, len(P_ens_values)))
 for i, ens in enumerate(P_ens_values):
     axes[1].plot(P_boost_values, boost_errors_by_ens[ens], label=fr"$P_{{ens}} = {ens}$", color=colors[i])
@@ -136,7 +138,7 @@ axes[1].grid(False)
 axes[1].set_yticklabels([])
 axes[1].set_ylabel("")
 
-# Panel C: Ensemble Size
+# Panel C: P_ens
 for i, rounds in enumerate(fixed_boosting_rounds):
     axes[2].plot(P_ens_values, ens_errors_by_boost[rounds], marker='o',
                  label=fr"$P_{{boost}} = {rounds}$", linestyle='-', alpha=0.85)
@@ -147,5 +149,5 @@ axes[2].grid(False)
 axes[2].set_yticklabels([])
 axes[2].set_ylabel("")
 
-plt.savefig("gradientboosting_CRyPTIC_double_descent.png", dpi=300)
+plt.savefig("CRyPTIC_gboost.png", dpi=300)
 plt.show()
