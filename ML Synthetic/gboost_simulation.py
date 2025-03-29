@@ -40,7 +40,7 @@ for rounds in P_boost_values:
         preds = []
         for i in range(ens):
             gb = GradientBoostingRegressor(
-                n_estimators=rounds, max_depth=3, learning_rate=0.85,
+                n_estimators=rounds, max_leaf_nodes=10, learning_rate=0.85,
                 subsample=0.8, random_state=42 + i
             )
             gb.fit(X_train, y_train)
@@ -55,7 +55,7 @@ for ens in P_ens_values:
         preds = []
         for i in range(ens):
             gb = GradientBoostingRegressor(
-                n_estimators=boost, max_depth=3, learning_rate=0.85,
+                n_estimators=boost, max_leaf_nodes=10, learning_rate=0.85,
                 subsample=0.8, random_state=42 + i
             )
             gb.fit(X_train, y_train)
@@ -70,7 +70,7 @@ composite_x_labels = []
 # Phase 1: Increase P_boost, P_ens = 1
 for rounds in P_boost_values:
     gb = GradientBoostingRegressor(
-        n_estimators=rounds, max_depth=3, learning_rate=0.85,
+        n_estimators=rounds, max_leaf_nodes=10, learning_rate=0.85,
         subsample=0.8, random_state=42
     )
     gb.fit(X_train, y_train)
@@ -86,7 +86,7 @@ for ens in P_ens_values:
     preds = []
     for i in range(ens):
         gb = GradientBoostingRegressor(
-            n_estimators=fixed_boost_rounds, max_depth=3, learning_rate=0.85,
+            n_estimators=fixed_boost_rounds, max_leaf_nodes=10, learning_rate=0.85,
             subsample=0.8, random_state=42 + i
         )
         gb.fit(X_train, y_train)
