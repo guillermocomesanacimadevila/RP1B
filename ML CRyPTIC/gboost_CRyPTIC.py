@@ -63,7 +63,7 @@ composite_errors = []
 composite_labels = []
 
 for rounds in P_boost_values:
-    gb = GradientBoostingRegressor(n_estimators=rounds, max_depth=3, learning_rate=0.1,
+    gb = GradientBoostingRegressor(n_estimators=rounds, max_leaf_nodes=10, learning_rate=0.1,
                                    subsample=0.8, random_state=42)
     gb.fit(X_train, y_train)
     y_pred = gb.predict(X_test)
@@ -75,7 +75,7 @@ interp_idx = len(composite_errors) - 1
 for ens in P_ens_values:
     preds = []
     for i in range(ens):
-        gb = GradientBoostingRegressor(n_estimators=fixed_boost_rounds, max_depth=3, learning_rate=0.1,
+        gb = GradientBoostingRegressor(n_estimators=fixed_boost_rounds, max_leaf_nodes=10, learning_rate=0.1,
                                        subsample=0.8, random_state=42 + i)
         gb.fit(X_train, y_train)
         preds.append(gb.predict(X_test))
@@ -90,7 +90,7 @@ for ens in P_ens_values:
     for rounds in P_boost_values:
         preds = []
         for i in range(ens):
-            gb = GradientBoostingRegressor(n_estimators=rounds, max_depth=3, learning_rate=0.1,
+            gb = GradientBoostingRegressor(n_estimators=rounds, max_leaf_nodes=10, learning_rate=0.1,
                                            subsample=0.8, random_state=42 + i)
             gb.fit(X_train, y_train)
             preds.append(gb.predict(X_test))
@@ -105,7 +105,7 @@ for rounds in fixed_boosting_rounds:
     for ens in P_ens_values:
         preds = []
         for i in range(ens):
-            gb = GradientBoostingRegressor(n_estimators=rounds, max_depth=3, learning_rate=0.1,
+            gb = GradientBoostingRegressor(n_estimators=rounds, max_leaf_nodes=10, learning_rate=0.1,
                                            subsample=0.8, random_state=42 + i)
             gb.fit(X_train, y_train)
             preds.append(gb.predict(X_test))
