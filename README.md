@@ -2,7 +2,7 @@
 
 ** All Bash scripts have been written in a UNIX-based system ** 
 
-** Python3 and a UNIX-based terminal is required for immediate execution ** 
+** Python3 and a UNIX-based terminal are required for immediate execution ** 
 
 ** Execute Bash scripts -> chmod +x file.sh && ./file.sh ** 
 
