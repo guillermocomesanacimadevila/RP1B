@@ -20,8 +20,8 @@ Y = np.sin(2 * np.pi * X0) + np.log10(X1 + 1) + 0.5 * epsilon
 
 # Plotting
 fig = plt.figure(figsize=(12, 7))
-ax = fig.add_subplot(111, projection='3d')
-surf = ax.plot_surface(X0, X1, Y, cmap='viridis', edgecolor='none')
+ax = fig.add_subplot(111, projection="3d")
+surf = ax.plot_surface(X0, X1, Y, cmap="viridis", edgecolor="none")
 
 ax.set_title("3D Plot of y = sin(2πX₀) + log₁₀(X₁ + 1) + 0.5ε")
 ax.set_xlabel("X₀")
