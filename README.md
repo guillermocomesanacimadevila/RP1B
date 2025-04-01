@@ -27,10 +27,10 @@
 - 08_QC_resistant.py (** QC - Remove INDELs and Empty loci - Resistant samples **)
 - 09_QC_susceptible.py (** QC - Remove INDELs and Empty loci - Susceptible samples **)
 - 10_Confirm_QC.py (** Confirm QC has worked - Pre-QC vs. Post-QC comparison **)
--  #### Machine Learning (CRyPTIC)
+  #### Machine Learning (CRyPTIC)
 -  dt_rf_CRyPTIC.py (** Decision Tree and Ensemble Experiments CRyPTIC **)
 -  gboost_CRyPTIC.py (** Boosting Rounds and Ensemble Experiments CRyPTIC **)
--  #### Machine Learning (Synthetic)
+  #### Machine Learning (Synthetic)
 -  dt_rf_simulation.py (** Decision Tree and Ensemble Experiments Synthetic **)
 -  gboost_simulation.py (** Boosting Rounds and Ensemble Experiments Synthetic **)
 
