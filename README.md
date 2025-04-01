@@ -17,7 +17,7 @@
 
 
 
-- 01_get_metadata.sh (** Get CSV metadata ** )
+- 01_get_metadata.sh (** Get CSV metadata - "CRyPTIC_reuse_table_20221019.csv" ** )
 - 02_exploratory_analysis.ipynb (** Split Resistant & Susceptible **)
 - 03_parse_resistant_vcfs.sh (** Get Resistant VCFs from sub-sampled metadata **)
 - 04_parse_susceptible_vcfs.sh (** Get Susceptible VCFs from sub-sampled metadata ** )
