@@ -12,3 +12,10 @@
 
 ## Pipeline Overview
 ![image](https://github.com/user-attachments/assets/d70a4fe1-68fa-4541-bceb-c507b3434616)
+
+### Pipeline Execution (Chronollogically)
+
+
+
+- 01_get_metadata.sh (** Get CSV metadata ** )
+- 02_exploratory_analysis.ipynb (** Split Resistant & Susceptible **)
