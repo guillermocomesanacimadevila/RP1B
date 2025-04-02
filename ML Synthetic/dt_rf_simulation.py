@@ -24,7 +24,9 @@ n_samples = 500
 n_features = 50
 
 X = np.random.rand(n_samples, n_features)
-y = np.sin(2 * np.pi * X[:, 0]) + np.log(X[:, 1] + 1) + 0.5 * np.random.randn(n_samples)
+
+# Update: Using Friedman #1 synthetic function for target y
+y = np.sin(np.pi * X[:, 0] * X[:, 1]) + 2 * (X[:, 2] - 0.5) ** 2 + X[:, 3] + 0.5 * X[:, 4] + 0.5 * np.random.randn(n_samples)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
