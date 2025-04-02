@@ -35,7 +35,7 @@
 -  gboost_simulation.py (** Boosting Rounds and Ensemble Experiments Synthetic **)
 
 #### -> ** Optional ** 
-- Supplementary/plot_synthetic_function.py (** 3D visual outlook of synthetic target "y" **)
+- Supplementary/plot_synthetic_function.ipynb (** 3D visual outlook of synthetic target "y" **)
 - y = sin(2πX₀) + log₁₀(X₁ + 1) + 0.5ε, where ε ~ 𝒩(0, 1)
 
 ## References
