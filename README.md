@@ -34,10 +34,6 @@
 -  dt_rf_simulation.py (** Decision Tree and Ensemble Experiments Synthetic **)
 -  gboost_simulation.py (** Boosting Rounds and Ensemble Experiments Synthetic **)
 
-#### -> ** Optional ** 
-- Supplementary/plot_synthetic_function.ipynb (** 3D visual outlook of synthetic target "y" **)
-- y = sin(2πX₀) + log₁₀(X₁ + 1) + 0.5ε, where ε ~ 𝒩(0, 1)
-
 ## References
 CRyPTIC, 2022. A data compendium associating the genomes of 12,289 Mycobacterium tuberculosis isolates with quantitative resistance phenotypes to 13 antibiotics [Online]. PLOS Biology, 20(8), p.e3001721. Available from: https://doi.org/10.1371/journal.pbio.3001721.
 
